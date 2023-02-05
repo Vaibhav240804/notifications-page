@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./assets/images/favicon-32x32.png"
+    />
+
+    <title>Frontend Mentor | Notifications page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500&display=swap" rel="stylesheet">
+    <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
+
+    <style>
+      *{
+        margin: 0px;
+        padding: 0px;
+        font-family: Plus Jakarta Sans;
+      }
+      .src-only {
+        display: none;
+        width: 0;
+        height: 0;
+      }
+      .unseen >.inner_div> .inner_inner_div::after{
+        content: ' ';
+        color: hsl(1, 90%, 64%);
+        display: block;
+        width: 5px;
+        height: 5px;
+        margin: 5px 10px;
+        z-index: 100;
+        background-color: hsl(1,90%,64%);
+        border: 2px solid hsl(1,90%,64%);
+        border-radius: 50%;
+      }
+      header{
+        display: flex;
+        justify-content: space-between;
+        align-items:center;
+        height: 15vh;
+        padding-inline: 2rem;
+        font-size: 16px;
+        font-weight: 800;
+      }
+      #btn_header {
+        display: block;
+        background-color: transparent;
+        border: none;
+      }
+      #btn_header p{
+        width: 100%;
+        font-weight: 500;
+        color: hsl(219, 14%, 63%);
+      }
+      #heading{
+        display: flex;
+      }
+      #count{
+        display: block;
+        background-color: hsl(224, 52%, 30%);
+        margin-inline-start: 0.35em;
+        padding-inline: 0.7rem;
+        color: hsl(0, 0%, 100%);
+        border: none;
+        border-radius: 5px;
+      }
+      .content{
+        padding-inline: 1rem;
+        padding-block: 0.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .notif{
+        display: flex;
+        justify-content: space-evenly;
+        margin-block: 0.85rem;
+        padding: 0.5rem;
+        padding-block: 1rem;
+        width: 90vw;
+        margin-inline: 0.25rem;
+        align-items: flex-start;
+        font-weight: 500;  
+        border-radius: 20px;
+        border: 2px solid hsl(210, 60%, 98%) ;
+      }
+      .unseen{
+        background-color: hsl(211, 68%, 96%);
+      }
+      
+      .unseen:hover{
+        cursor: pointer;
+        background-color: hsl(211, 68%, 93%,0.8);
+      }
+      .notif img{
+        width: 70px;
+        height: 70px;
+      }
+      .users_name,
+      .notif_prima_msg{
+        display: block;
+      }
+      .users_name{
+        font-weight: 800;
+      }
+      .notif_prima_msg{
+        color:  hsl(219, 14%, 63%);
+        margin-inline: 5px;
+      }
+      .inner_div{
+        display: block;
+        width: 70%;
+        padding-inline: 0.5rem;
+      }
+      .reaction_to_post{
+        color: hsl(218, 10%, 53%);
+      }
+      .timing{
+        /* display:inline-block; */
+        display: block;
+      }
+      .private_massage{
+        width: 90%;
+        position: relative;
+        left: 1rem;
+        margin-block: 0.5rem;
+        margin-inline: auto;
+        border: 2px solid hsl(210, 7%, 78%);
+        padding-block: 1rem;
+        padding-inline: 0.5rem;
+        border-radius: 5px;
+      }
+      .group{
+        font-weight: 800;
+        color: hsl(250, 77%, 42%);
+        
+      }
+      .inner_inner_div{
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+      .mssg>.inner_div{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+      }
+      .timing{
+        color: hsl(210, 4%, 51%) ;
+      }
+      @media (max-width: 375px) {
+        .private_massage{
+          position: relative;
+          left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="notification">
+        <span class="src-only">Notifications</span>
+        <p id="heading">Notifications <span id="count" data-present="false"></span></p>
+      </div>
+      <button onclick="unseentoseen()" id="btn_header">
+        <p id="mark_read" data-present="false"></p>
+      </button>
+    </header>
+    <!-- actual notifications start from here -->
+    <div class="content">
+      <!-- content will be loaded by js -->
+    </div>
+    <script>
+      let names_classes = [
+        {
+          name: "Mark Webber",
+          type: "post_react",
+          img: "./assets/images/avatar-mark-webber.webp",
+          massage: "My first tournament today!",
+          time: "1m ago",
+        },
+        {
+          name: "Angela Gray",
+          type: "follow",
+          img: "./assets/images/avatar-angela-gray.webp",
+          time: "3m ago",
+        },
+        {
+          name: "Jacob Thompson",
+          type: "grp_join",
+          img: "./assets/images/avatar-jacob-thompson.webp",
+          grp_name: "Chess Club",
+          time: "1 day ago",
+        },
+        {
+          name: "Rizky Hasanuddin",
+          type: "mssg",
+          massage:
+            "Hello,thanks for setting up the Chess Club.I've been a member for a few weeks now and I'm already having lots of fun and improving my game.",
+          img: "./assets/images/avatar-rizky-hasanuddin.webp",
+          time: "5 days ago",
+        },
+        {
+          name: "Kimberly Smith",
+          type: "comment",
+          img: "./assets/images/avatar-kimberly-smith.webp",
+          time: "1 week ago",
+        },
+        {
+          name: "Nathan Peterson",
+          type: "post_react",
+          massage: "5 end-game strategies to increase your win rate",
+          img: "./assets/images/avatar-nathan-peterson.webp",
+          time: "2 weeks ago",
+        },
+        {
+          name: "Anna Kim",
+          type: "left_grp",
+          img: "./assets/images/avatar-anna-kim.webp",
+          grp_name: "Chess Club",
+          time: "2 weeks ago",
+        },
+      ];
+      let div_parent = document.body.querySelector(".content");
+      // let notif = document.querySelectorAll(".notif");
+
+      names_classes.forEach((ele) => {
+        let div_child = document.createElement("div");
+        div_child.classList.add("notif", "unseen");
+        div_parent.appendChild(div_child);
+        let name_head = ele.name;
+        let html_name = `<span class = "users_name">${name_head}</span>`;
+        let users_img = new Image();
+        users_img.src = `${ele.img}`;
+        div_child.classList.add(`${ele.type}`);
+        div_child.appendChild(users_img);
+        let inner_div = document.createElement("div");
+        let inner_inner_div = document.createElement("div");
+        inner_inner_div.classList.add('inner_inner_div');
+        inner_div.appendChild(inner_inner_div);
+        inner_div.classList.add("inner_div");
+        div_child.appendChild(inner_div);
+
+        inner_inner_div.innerHTML += html_name;
+        let notification_of_follow = "followed you";
+        let notification_of_react = "reacted to your recent post";
+        let notification_of_join = "has joined your group";
+        let notification_of_mssg = "sent you a private message";
+        let notification_of_comment = "commented on your picture";
+        let notification_of_grpleft = "left the group";
+        let notif_header_msg = document.createElement("span");
+        let timing_of_notif = document.createElement("p");
+        timing_of_notif.classList.add("timing");
+        timing_of_notif.innerHTML = ele.time;
+        notif_header_msg.classList.add("notif_prima_msg");
+        let group_name;
+        if (ele.type == "follow") {
+          notif_header_msg.innerText = notification_of_follow;
+          inner_inner_div.appendChild(notif_header_msg);
+          inner_div.appendChild(timing_of_notif);
+        } else if (ele.type == "post_react") {
+          notif_header_msg.innerText = notification_of_react;
+          let react_user = document.createElement("span");
+          react_user.classList.add("reaction_to_post");
+          react_user.innerText = ele.massage;
+          inner_inner_div.appendChild(notif_header_msg);
+          inner_inner_div.appendChild(react_user);
+          inner_div.appendChild(timing_of_notif);
+        } else if (ele.type == "mssg") {
+          notif_header_msg.innerText = notification_of_mssg;
+          inner_inner_div.appendChild(notif_header_msg);
+          inner_div.appendChild(timing_of_notif);
+          let private_mssg = document.createElement("p");
+          private_mssg.classList.add("private_massage");
+          private_mssg.innerText = ele.massage;
+          inner_div.appendChild(private_mssg);
+        } else if (ele.type == "comment") {
+          notif_header_msg.innerText = notification_of_comment;
+          inner_inner_div.appendChild(notif_header_msg);
+          inner_div.appendChild(timing_of_notif);
+        } else {
+          group_name = document.createElement("span");
+          group_name.innerText = ele.grp_name;
+          group_name.classList.add("group");
+          if (ele.type == "grp_join")
+            notif_header_msg.innerText = notification_of_join;
+          else if (ele.type == "left_grp")
+            notif_header_msg.innerText = notification_of_grpleft;
+          inner_inner_div.appendChild(notif_header_msg);
+        }
+        if (ele.type == "grp_join" || ele.type == "left_grp") {
+          inner_inner_div.appendChild(group_name);
+          inner_div.appendChild(timing_of_notif);
+        }
+        let num = document.querySelectorAll(".unseen").length;
+        if (num != 0) {
+          document.getElementById("count").setAttribute("data-visible", "true");
+          document.getElementById("count").innerText = num;
+          document.getElementById("mark_read").innerText = "Mark all as read";
+        }
+        div_child.addEventListener("click", () => {
+          if (div_child.hasAttribute("class", "unseen")) {
+            div_child.classList.remove("unseen");
+            console.log(num);
+            num = document.querySelectorAll(".unseen").length;
+          }
+          if (num != 0) {
+            document
+              .getElementById("count")
+              .setAttribute("data-visible", "true");
+            document
+              .getElementById("mark_read")
+              .setAttribute("data-visible", "true");
+          } else {
+            document
+              .getElementById("count")
+              .setAttribute("data-visible", "false");
+            document
+              .getElementById("mark_read")
+              .setAttribute("data-visible", "false");
+              document
+              .getElementById("count").style.display = 'none';
+              document
+              .getElementById("mark_read").style.display = 'none';
+          }
+          document.getElementById("count").innerText = num;
+        });
+      });
+      let unseentoseen = () => {
+        document.getElementById("count").setAttribute("data-visible", "false");
+        document.getElementById("count").style.display = 'none';
+        document.querySelectorAll(".unseen").forEach((entry) => {
+          entry.classList.remove("unseen");
+        });
+        document
+          .getElementById("mark_read")
+          .setAttribute("data-visible", "false");
+          document
+              .getElementById("mark_read").style.display = 'none'
+      };
+    </script>
+  </body>
+</html>
